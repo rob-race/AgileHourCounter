@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AgileHourCounter/AgileHourCounter.iml" filepath="$PROJECT_DIR$/AgileHourCounter/AgileHourCounter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AgileHourCounterProject.iml" filepath="$PROJECT_DIR$/AgileHourCounterProject.iml" />
+    </modules>
+  </component>
+</project>
+
