@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="10dp">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/resource_name"
+              android:layout_width="190dp"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceListItemSmall"
+              android:gravity="center_vertical"
+              android:minHeight="?android:attr/listPreferredItemHeightSmall"
+              android:textSize="30sp"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/available_hours"
+              android:layout_width="90dp"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceListItemSmall"
+              android:gravity="center_vertical"
+              android:minHeight="?android:attr/listPreferredItemHeightSmall"
+              android:textSize="35sp"
+        />
+
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="-"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:id="@+id/remove_hour_resource_button"
+        android:onClick="removeHourFromCurrentResource"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/current_hours"
+              android:layout_width="90dp"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceListItemSmall"
+              android:gravity="center_vertical"
+              android:minHeight="?android:attr/listPreferredItemHeightSmall"
+              android:textSize="35sp"
+        />
+
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="+"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:id="@+id/add_hour_resource_button"
+        android:onClick="addHourFromCurrentResource"
+        />
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/current_hours_util"
+              android:layout_width="90sp"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:textSize="35sp"
+              android:layout_marginLeft="10dp"
+        />
+
+</LinearLayout>

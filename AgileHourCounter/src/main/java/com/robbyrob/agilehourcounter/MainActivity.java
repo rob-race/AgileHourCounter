@@ -1,15 +1,18 @@
 package com.robbyrob.agilehourcounter;
 
-import java.util.Locale;
-
-import com.robbyrob.agilehourcounter.TabsPagerAdapter;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
@@ -17,6 +20,9 @@ public class MainActivity extends FragmentActivity implements
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
+    public static Resource currentResource;
+    public static ArrayList<Resource> al;
+    public static ArrayList<String> strar;
     // Tab titles
     private String[] tabs = { "Counter", "Resources", "Add Resource" };
 
@@ -24,10 +30,45 @@ public class MainActivity extends FragmentActivity implements
         viewPager.setCurrentItem(2);
     }
 
+    public void modifyResource(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Soon")
+                .setMessage("There will be some edit and delete action up in here...")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .show();
+    }
+
+    public void addResource(View view) {
+
+        EditText getName = (EditText) findViewById(R.id.resourceNameeditText);
+        String name = getName.getText().toString();
+        EditText getHours = (EditText) findViewById(R.id.resourceHoureditText);
+        TextView util = (TextView) findViewById(R.id.current_hours_util);
+        util.setText("this");
+        al.add(new Resource(name, Integer.parseInt(getHours.getText().toString()), 0));
+        strar.clear();
+        for (Resource item : al) {
+            strar.add(item.getResourceName());
+        }
+
+        getName.setText("");
+        getHours.setText("");
+        ResourceFragment.aa.notifyDataSetChanged();
+        viewPager.setCurrentItem(1);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //currentResource = new Resource();
+        al = new ArrayList<Resource>();
+        strar = new ArrayList<String>();
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -64,6 +105,8 @@ public class MainActivity extends FragmentActivity implements
             public void onPageScrollStateChanged(int arg0) {
             }
         });
+
+
     }
 
     @Override
