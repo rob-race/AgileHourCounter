@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,11 @@ public class CounterAdapter extends ArrayAdapter<String> {
         textViewAvail.setText(values.get(position).getResourceAvailableHours().toString());
         TextView textViewCurrent = (TextView) rowView.findViewById(R.id.current_hours);
         textViewCurrent.setText(values.get(position).getResourceCurrentHours().toString());
+        TextView textViewCurrentUtil = (TextView) rowView.findViewById(R.id.current_hours_util);
+        NumberFormat percentFormat = NumberFormat.getPercentInstance();
+        percentFormat.setMaximumFractionDigits(2);
+        textViewCurrentUtil.setText(percentFormat.format(values.get(position).getResourceHourUtilization()));
+
         // Change the icon for Windows and iPhone
 
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -47,9 +48,7 @@ public class MainActivity extends FragmentActivity implements
         EditText getName = (EditText) findViewById(R.id.resourceNameeditText);
         String name = getName.getText().toString();
         EditText getHours = (EditText) findViewById(R.id.resourceHoureditText);
-        TextView util = (TextView) findViewById(R.id.current_hours_util);
-        util.setText("this");
-        al.add(new Resource(name, Integer.parseInt(getHours.getText().toString()), 0));
+        al.add(new Resource(name, Integer.parseInt(getHours.getText().toString()), 0, 0));
         strar.clear();
         for (Resource item : al) {
             strar.add(item.getResourceName());
@@ -60,6 +59,34 @@ public class MainActivity extends FragmentActivity implements
         ResourceFragment.aa.notifyDataSetChanged();
         viewPager.setCurrentItem(1);
 
+    }
+
+    public void addHourFromCurrentResource(View view){
+       ViewGroup row = (ViewGroup) view.getParent();
+       TextView tv = (TextView) row.getChildAt(0);
+        String name = tv.getText().toString();
+        Object res = Resource.getResourceByName(name, al);
+       int entryIndex = al.indexOf(res);
+       Resource entry = al.get(entryIndex);
+
+       entry.setResourceCurrentHours(entry.getResourceCurrentHours()+1);
+       entry.setResourceHourUtilization(entry.getResourceCurrentHours().doubleValue()/entry.getResourceAvailableHours().doubleValue());
+        CounterFragment.aa2.notifyDataSetChanged();
+    }
+
+    public void removeHourFromCurrentResource(View view){
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView tv = (TextView) row.getChildAt(0);
+        String name = tv.getText().toString();
+        Object res = Resource.getResourceByName(name, al);
+        int entryIndex = al.indexOf(res);
+        Resource entry = al.get(entryIndex);
+
+        if(entry.getResourceCurrentHours() > 0){
+            entry.setResourceCurrentHours(entry.getResourceCurrentHours()-1);
+            entry.setResourceHourUtilization(entry.getResourceCurrentHours().doubleValue()/entry.getResourceAvailableHours().doubleValue());
+            CounterFragment.aa2.notifyDataSetChanged();
+        }
     }
 
     @Override
