@@ -18,4 +18,9 @@ public class EditResourceFragment extends Fragment {
 
         return rootView;
     }
+
+    @Override
+    public View onStart() {
+
+    }
 }

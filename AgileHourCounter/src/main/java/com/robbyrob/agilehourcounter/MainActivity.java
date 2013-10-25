@@ -2,6 +2,7 @@ package com.robbyrob.agilehourcounter;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -32,7 +33,21 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void modifyResource(View view) {
+        actionBar.getTabAt(2).setText("Edit resource");
+        actionBar.setSelectedNavigationItem(2);
+        //mAdapter.getItem(3);
+        //viewPager.setCurrentItem(2);
+        // Create new fragment and transaction
+        Fragment newFragment = new EditResourceFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.pager, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     public void removeResource(View view) {
