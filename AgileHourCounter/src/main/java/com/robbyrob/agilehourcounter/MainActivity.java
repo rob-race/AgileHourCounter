@@ -2,18 +2,20 @@ package com.robbyrob.agilehourcounter;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import static com.robbyrob.agilehourcounter.CounterFragment.aa2;
+import static com.robbyrob.agilehourcounter.ResourceFragment.aa;
 
 public class MainActivity extends FragmentActivity implements
         ActionBar.TabListener {
@@ -21,9 +23,7 @@ public class MainActivity extends FragmentActivity implements
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
-    public static Resource currentResource;
     public static ArrayList<Resource> al;
-    public static ArrayList<String> strar;
     // Tab titles
     private String[] tabs = { "Counter", "Resources", "Add Resource" };
 
@@ -32,15 +32,14 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void modifyResource(View view) {
-        new AlertDialog.Builder(this)
-                .setTitle("Soon")
-                .setMessage("There will be some edit and delete action up in here...")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .show();
+
+    }
+
+    public void removeResource(View view) {
+        int entryIndex = returnListIndex(view);
+        al.remove(entryIndex);
+        aa.notifyDataSetChanged();
+        aa2.notifyDataSetChanged();
     }
 
     public void addResource(View view) {
@@ -49,14 +48,11 @@ public class MainActivity extends FragmentActivity implements
         String name = getName.getText().toString();
         EditText getHours = (EditText) findViewById(R.id.resourceHoureditText);
         al.add(new Resource(name, Integer.parseInt(getHours.getText().toString()), 0, 0));
-        strar.clear();
-        for (Resource item : al) {
-            strar.add(item.getResourceName());
-        }
-
+        aa.notifyDataSetChanged();
         getName.setText("");
         getHours.setText("");
-        ResourceFragment.aa.notifyDataSetChanged();
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getHours.getWindowToken(), 0);
         viewPager.setCurrentItem(1);
 
     }
@@ -71,7 +67,7 @@ public class MainActivity extends FragmentActivity implements
 
        entry.setResourceCurrentHours(entry.getResourceCurrentHours()+1);
        entry.setResourceHourUtilization(entry.getResourceCurrentHours().doubleValue()/entry.getResourceAvailableHours().doubleValue());
-        CounterFragment.aa2.notifyDataSetChanged();
+        aa2.notifyDataSetChanged();
     }
 
     public void removeHourFromCurrentResource(View view){
@@ -85,7 +81,7 @@ public class MainActivity extends FragmentActivity implements
         if(entry.getResourceCurrentHours() > 0){
             entry.setResourceCurrentHours(entry.getResourceCurrentHours()-1);
             entry.setResourceHourUtilization(entry.getResourceCurrentHours().doubleValue()/entry.getResourceAvailableHours().doubleValue());
-            CounterFragment.aa2.notifyDataSetChanged();
+            aa2.notifyDataSetChanged();
         }
     }
 
@@ -93,9 +89,7 @@ public class MainActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //currentResource = new Resource();
         al = new ArrayList<Resource>();
-        strar = new ArrayList<String>();
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -149,6 +143,14 @@ public class MainActivity extends FragmentActivity implements
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    }
+
+    private int returnListIndex(View view) {
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView tv = (TextView) row.getChildAt(0);
+        String name = tv.getText().toString();
+        Object res = Resource.getResourceByName(name, al);
+        return al.indexOf(res);
     }
 
 }

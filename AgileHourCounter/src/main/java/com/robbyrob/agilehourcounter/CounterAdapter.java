@@ -39,9 +39,6 @@ public class CounterAdapter extends ArrayAdapter<String> {
         percentFormat.setMaximumFractionDigits(2);
         textViewCurrentUtil.setText(percentFormat.format(values.get(position).getResourceHourUtilization()));
 
-        // Change the icon for Windows and iPhone
-
-
         return rowView;
     }
 }

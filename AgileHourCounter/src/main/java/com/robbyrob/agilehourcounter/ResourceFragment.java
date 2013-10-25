@@ -9,11 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ResourceFragment extends Fragment {
-    public static ArrayAdapter<String> aa;
+    public static ResourceAdapter aa;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,8 +21,7 @@ public class ResourceFragment extends Fragment {
         ListView LV = (ListView) rootView.findViewById(R.id.resource_detail_listView);
         LV.setClickable(true);
 
-
-        aa = new ArrayAdapter<String>(getActivity(), R.layout.resource_list_item, R.id.resource_name, MainActivity.strar);
+        aa = new ResourceAdapter(getActivity(), MainActivity.al);
         LV.setAdapter(aa);
         return rootView;
     }

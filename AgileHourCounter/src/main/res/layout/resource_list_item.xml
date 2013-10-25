@@ -18,9 +18,17 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/modify_resource"
+        android:id="@+id/modifyresource_button"
+        android:onClick="modifyResource"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/remove_resource"
         android:id="@+id/remove_resource_button"
-        android:onClick="modifyResource"
+        android:onClick="removeResource"
         />
 
 </LinearLayout>
