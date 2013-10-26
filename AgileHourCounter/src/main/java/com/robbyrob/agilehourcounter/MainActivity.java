@@ -2,11 +2,13 @@ package com.robbyrob.agilehourcounter;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.Fragment;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -33,21 +35,43 @@ public class MainActivity extends FragmentActivity implements
     }
 
     public void modifyResource(View view) {
-        actionBar.getTabAt(2).setText("Edit resource");
-        actionBar.setSelectedNavigationItem(2);
-        //mAdapter.getItem(3);
-        //viewPager.setCurrentItem(2);
-        // Create new fragment and transaction
-        Fragment newFragment = new EditResourceFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        ViewGroup row = (ViewGroup) view.getParent();
+        TextView tv = (TextView) row.getChildAt(0);
+        String name = tv.getText().toString();
+        Object res = Resource.getResourceByName(name, al);
+        final int entryIndex = al.indexOf(res);
+        final Resource entry = al.get(entryIndex);
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack
-        transaction.replace(R.id.pager, newFragment);
-        transaction.addToBackStack(null);
+        LayoutInflater li = LayoutInflater.from(this);
+        View editResourceView = li.inflate(R.layout.fragment_edit_resource, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(editResourceView);
 
-        // Commit the transaction
-        transaction.commit();
+        final EditText nameInput = (EditText) editResourceView.findViewById(R.id.resourceNameeditText);
+        nameInput.setText(entry.getResourceName());
+        final EditText hourInput = (EditText) editResourceView.findViewById(R.id.resourceHoureditText);
+        hourInput.setText(entry.getResourceAvailableHours().toString());
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                al.set(entryIndex, new Resource(nameInput.getText().toString(), Integer.parseInt(hourInput.getText().toString()), entry.getResourceCurrentHours(), (entry.getResourceCurrentHours().doubleValue() / Integer.parseInt(hourInput.getText().toString()))));
+                                aa.notifyDataSetChanged();
+                                aa2.notifyDataSetChanged();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
     }
 
     public void removeResource(View view) {
